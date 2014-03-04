@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import android.location.Location;
 import android.media.ExifInterface;
 import android.os.Environment;
@@ -74,7 +73,6 @@ public class LocationScanner {
 				try {
 					loadAllImages(ROOT_FOLDER);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				activity.scanFinished(locationList
