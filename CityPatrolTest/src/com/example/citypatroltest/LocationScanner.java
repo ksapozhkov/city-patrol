@@ -27,14 +27,9 @@ public class LocationScanner {
 		locationList = new ArrayList<Location>();
 	}
 
-	private void getExifInfo(File file) {
+	private void getExifInfo(File file) throws IOException {
 		ExifInterface exif = null;
-		try {
-			exif = new ExifInterface(file.getAbsolutePath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		exif = new ExifInterface(file.getAbsolutePath());
 		if (exif != null) {
 			float[] lat_lng = new float[2];
 			exif.getLatLong(lat_lng);
@@ -48,29 +43,15 @@ public class LocationScanner {
 		}
 	}
 
-	private void loadAllImages(String rootFolder) {
-		if (!weHaveTime()) {
-			// time out
-			return;
-		} else {
-			File file = new File(rootFolder);
-			File[] files = file.listFiles();
-			if (files != null && files.length > 0) {
-				for (File f : files) {
-					if (!weHaveTime()) {
-						// time out
-						return;
-					} else {
-						if (f.isDirectory()) {
-							loadAllImages(f.getAbsolutePath());
-						} else {
-							for (int i = 0; i < extensions.length; i++) {
-								if (f.getAbsolutePath().endsWith(extensions[i])) {
-									getExifInfo(f);
-								}
-							}
-						}
-					}
+	private void loadAllImages(String rootFolder) throws IOException {
+		File[] files = new File(rootFolder).listFiles();
+		for (File f : files) {
+			if (!weHaveTime()) return;
+			if (f.isDirectory()) {
+				loadAllImages(f.getAbsolutePath());
+			} else {
+				for (int i = 0; i < extensions.length; i++) {
+					if (f.getAbsolutePath().endsWith(extensions[i])) getExifInfo(f);
 				}
 			}
 		}
@@ -89,7 +70,12 @@ public class LocationScanner {
 			public void run() {
 				startTime = new Date().getTime();
 				while (!isInterrupted()) {
-					loadAllImages(ROOT_FOLDER);
+					try {
+						loadAllImages(ROOT_FOLDER);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					activity.scanFinished(locationList
 							.toArray(new Location[locationList.size()]));
 					interrupt();
@@ -98,5 +84,5 @@ public class LocationScanner {
 		};
 		scanThread.start();
 	}
-	
+
 }
