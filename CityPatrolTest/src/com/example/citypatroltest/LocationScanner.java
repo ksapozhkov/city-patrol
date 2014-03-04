@@ -13,7 +13,6 @@ import android.os.Environment;
 public class LocationScanner {
 
 	private List<Location> locationList;
-	private Thread scanThread;
 	private long startTime;
 	private MainActivity activity;
 	private static final String[] extensions = { "jpg", "jpeg", "JPG", "JPEG" };
@@ -69,7 +68,7 @@ public class LocationScanner {
 	 * Searching the images in all directories on sd card.
 	 */
 	public void scan() {
-		scanThread = new Thread() {
+		Thread scanThread = new Thread() {
 			public void run() {
 				startTime = new Date().getTime();
 				try {
