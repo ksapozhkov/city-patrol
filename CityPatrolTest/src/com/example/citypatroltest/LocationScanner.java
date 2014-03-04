@@ -47,12 +47,14 @@ public class LocationScanner {
 		File[] files = new File(rootFolder).listFiles();
 		if (files != null) {
 			for (File f : files) {
-				if (!weHaveTime()) return;
+				if (!weHaveTime())
+					return;
 				if (f.isDirectory()) {
 					loadAllImages(f.getAbsolutePath());
 				} else {
 					for (int i = 0; i < extensions.length; i++) {
-						if (f.getAbsolutePath().endsWith(extensions[i])) getExifInfo(f);
+						if (f.getAbsolutePath().endsWith(extensions[i]))
+							getExifInfo(f);
 					}
 				}
 			}
@@ -71,17 +73,15 @@ public class LocationScanner {
 		scanThread = new Thread() {
 			public void run() {
 				startTime = new Date().getTime();
-				while (!isInterrupted()) {
-					try {
-						loadAllImages(ROOT_FOLDER);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					activity.scanFinished(locationList
-							.toArray(new Location[locationList.size()]));
-					interrupt();
+				try {
+					loadAllImages(ROOT_FOLDER);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				activity.scanFinished(locationList
+						.toArray(new Location[locationList.size()]));
+				interrupt();
 			}
 		};
 		scanThread.start();
