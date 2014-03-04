@@ -54,22 +54,19 @@ public class LocationScanner {
 			return;
 		} else {
 			File file = new File(rootFolder);
-			if (file.isDirectory()) {
-				File[] files = file.listFiles();
-				if (files != null && files.length > 0) {
-					for (File f : files) {
-						if (!weHaveTime()) {
-							// time out
-							return;
+			File[] files = file.listFiles();
+			if (files != null && files.length > 0) {
+				for (File f : files) {
+					if (!weHaveTime()) {
+						// time out
+						return;
+					} else {
+						if (f.isDirectory()) {
+							loadAllImages(f.getAbsolutePath());
 						} else {
-							if (f.isDirectory()) {
-								loadAllImages(f.getAbsolutePath());
-							} else {
-								for (int i = 0; i < extensions.length; i++) {
-									if (f.getAbsolutePath().endsWith(
-											extensions[i])) {
-										getExifInfo(f);
-									}
+							for (int i = 0; i < extensions.length; i++) {
+								if (f.getAbsolutePath().endsWith(extensions[i])) {
+									getExifInfo(f);
 								}
 							}
 						}
@@ -101,4 +98,5 @@ public class LocationScanner {
 		};
 		scanThread.start();
 	}
+	
 }
