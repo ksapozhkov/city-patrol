@@ -13,7 +13,6 @@ import android.os.Environment;
 public class LocationScanner {
 
 	private List<Location> locationList;
-	protected boolean isScan;
 	private Thread scanThread;
 	private long startTime;
 	private MainActivity activity;
