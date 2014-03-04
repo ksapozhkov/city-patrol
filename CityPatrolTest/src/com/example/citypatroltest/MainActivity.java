@@ -1,14 +1,12 @@
 package com.example.citypatroltest;
 
-import com.example.citypatroltest.LocationScanner.ScanLocation;
-
+import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements ScanLocation {
+public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +25,7 @@ public class MainActivity extends Activity implements ScanLocation {
 		return true;
 	}
 
-	@Override
-	public void onScanFinished(final Location[] scannedData) {
+	public void scanFinished(final Location[] scannedData) {
 		runOnUiThread(new Runnable() {
 
 			@Override

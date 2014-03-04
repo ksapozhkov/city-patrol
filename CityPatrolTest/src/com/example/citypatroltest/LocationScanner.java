@@ -6,29 +6,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.os.Environment;
 
 public class LocationScanner {
 
-	public interface ScanLocation {
-		void onScanFinished(Location[] location);
-	}
-
-	private ScanLocation scanLocation;
 	private List<Location> locationList;
 	protected boolean isScan;
 	private Thread scanThread;
 	private long startTime;
+	private MainActivity activity;
 	private static final String[] extensions = { "jpg", "jpeg", "JPG", "JPEG" };
 	private static final int TIME_OUT = 30000; // 30 seconds
 	private static final String ROOT_FOLDER = Environment
 			.getExternalStorageDirectory().getPath();
 
-	public LocationScanner(Activity activity) {
-		scanLocation = (ScanLocation) activity;
+	public LocationScanner(MainActivity activity) {
+		this.activity = activity;
 		locationList = new ArrayList<Location>();
 	}
 
@@ -98,7 +93,7 @@ public class LocationScanner {
 				startTime = new Date().getTime();
 				while (!isInterrupted()) {
 					loadAllImages(ROOT_FOLDER);
-					scanLocation.onScanFinished(locationList
+					activity.scanFinished(locationList
 							.toArray(new Location[locationList.size()]));
 					interrupt();
 				}
