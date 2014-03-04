@@ -45,13 +45,15 @@ public class LocationScanner {
 
 	private void loadAllImages(String rootFolder) throws IOException {
 		File[] files = new File(rootFolder).listFiles();
-		for (File f : files) {
-			if (!weHaveTime()) return;
-			if (f.isDirectory()) {
-				loadAllImages(f.getAbsolutePath());
-			} else {
-				for (int i = 0; i < extensions.length; i++) {
-					if (f.getAbsolutePath().endsWith(extensions[i])) getExifInfo(f);
+		if (files != null) {
+			for (File f : files) {
+				if (!weHaveTime()) return;
+				if (f.isDirectory()) {
+					loadAllImages(f.getAbsolutePath());
+				} else {
+					for (int i = 0; i < extensions.length; i++) {
+						if (f.getAbsolutePath().endsWith(extensions[i])) getExifInfo(f);
+					}
 				}
 			}
 		}
